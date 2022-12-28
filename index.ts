@@ -53,17 +53,13 @@ async function getLinkPreview(url: string) {
 
   // Parse the HTML using cheerio
   const $ = cheerio.load(html);
-  console.log(html);
 
   const title = $("title").text();
 
   const description =
     $("meta[name=description]").attr("content") || "__blank__";
 
-  let image =
-    $("link[as='image']").attr("href") ||
-    $("meta[property='og:image']").attr("content") ||
-    "https://www.teahub.io/photos/full/239-2396598_wallpaper-single-magenta-solid-color-one-colour-plain.jpg";
+  let image = $("meta[property='og:image']").attr("content") || "https://www.teahub.io/photos/full/239-2396598_wallpaper-single-magenta-solid-color-one-colour-plain.jpg";
 
   const favicon =
     $("link[rel='icon']").attr("href") ||
