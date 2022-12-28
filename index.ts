@@ -19,19 +19,7 @@ router.get("/", async (context) => {
   console.log(url);
 
 
-  // Parse the URL using the URL object
-  const parsedUrl = new URL(url);
-
-  console.log(parsedUrl);
-
-  // Extract the hostname from the URL
-  const domain = `${parsedUrl.protocol}//${parsedUrl.hostname}`;
-
-
-  console.log(domain);
-
-  // Get the link preview information
-  const linkPreview = await getLinkPreview(domain);
+  const linkPreview = await getLinkPreview(url);
   console.log(linkPreview);
 
   // Set the response header to application/json
@@ -65,10 +53,15 @@ async function getLinkPreview(url: string) {
 
   // Parse the HTML using cheerio
   const $ = cheerio.load(html);
+  console.log(html);
+
   const title = $("title").text();
+
   const description =
     $("meta[name=description]").attr("content") || "__blank__";
-  const image =
+
+  let image =
+    $("link[as='image']").attr("href") ||
     $("meta[property='og:image']").attr("content") ||
     "https://www.teahub.io/photos/full/239-2396598_wallpaper-single-magenta-solid-color-one-colour-plain.jpg";
 
@@ -84,3 +77,13 @@ async function getLinkPreview(url: string) {
     favicon,
   };
 }
+
+// function isYoutubeURL(url) {
+//   let regex = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+//   return regex.test(url)
+// }
+
+// function YouTubeGetID(url) {
+//   url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+//   return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+// }
