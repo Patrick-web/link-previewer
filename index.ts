@@ -47,8 +47,3 @@ async function getLinkPreview(url: string) {
     image,
   };
 }
-
-(async () => {
-  const linkPreview = await getLinkPreview("https://openai.com");
-  console.log(linkPreview);
-})();
