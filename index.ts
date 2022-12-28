@@ -8,7 +8,11 @@ router.get("/", async (context) => {
   const params = context.request.url.searchParams;
 
   // Get the URL from the query string
-  const url = params.get("url") as string;
+  const url = params.get("url");
+  if (!url) {
+    context.response.body = "Provide a url\neg: ?url=https://example.com";
+    return;
+  }
 
   // Parse the URL using the URL object
   const parsedUrl = new URL(url);
@@ -17,7 +21,10 @@ router.get("/", async (context) => {
   const domain = parsedUrl.hostname;
 
   // Remove the subdomain from the domain
-  const domainWithoutSubdomain = `https://${domain.replace(/.*?\./, "")}`;
+  const domainWithoutSubdomain = `${parsedUrl.protocol}//${domain.replace(
+    /.*?\./,
+    ""
+  )}`;
 
   console.log(domainWithoutSubdomain);
 
