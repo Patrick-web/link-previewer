@@ -62,9 +62,7 @@ async function getLinkPreview(url: string) {
   let image = $("meta[property='og:image']").attr("content") || "https://www.teahub.io/photos/full/239-2396598_wallpaper-single-magenta-solid-color-one-colour-plain.jpg";
 
   const favicon =
-    $("link[rel='icon']").attr("href") ||
-    "https://icons8.com/icon/NyuxPErq0tu2/globe-africa";
-
+    $("link[rel='icon']").attr("href") || ""
   // Return the link preview object
   return {
     title,
