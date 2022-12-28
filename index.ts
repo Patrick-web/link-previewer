@@ -1,6 +1,33 @@
-// import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
+import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import * as cheerio from "https://esm.sh/cheerio@1.0.0-rc.12";
-console.log("Yeees");
+
+const router = new Router();
+
+router.get("/", async (context) => {
+  //Get Search params
+  const params = context.request.url.searchParams;
+
+  // Get the URL from the query string
+  const url = params.get("url") as string;
+
+  // Get the link preview information
+  const linkPreview = await getLinkPreview(url);
+  console.log(linkPreview);
+
+  // Set the response header to application/json
+  context.response.headers.set("Content-Type", "application/json");
+
+  // Return the link preview information as a JSON response
+  context.response.body = linkPreview;
+});
+
+const app = new Application();
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+console.log("Listening on port 8000...");
+await app.listen({ port: 8000 });
 
 async function getLinkPreview(url: string) {
   // Fetch the HTML of the webpage
