@@ -57,7 +57,7 @@ async function getLinkPreview(url: string) {
   const title = $("title").text();
 
   const description =
-    $("meta[name=description]").attr("content") || "__blank__";
+    $("meta[name=description]").attr("content") || "";
 
   let image = $("meta[property='og:image']").attr("content") || "https://www.teahub.io/photos/full/239-2396598_wallpaper-single-magenta-solid-color-one-colour-plain.jpg";
 
