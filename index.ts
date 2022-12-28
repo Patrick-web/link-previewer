@@ -17,7 +17,9 @@ router.get("/", async (context) => {
   const domain = parsedUrl.hostname;
 
   // Remove the subdomain from the domain
-  const domainWithoutSubdomain = domain.replace(/.*?\./, "");
+  const domainWithoutSubdomain = `https://${domain.replace(/.*?\./, "")}`;
+
+  console.log(domainWithoutSubdomain);
 
   // Get the link preview information
   const linkPreview = await getLinkPreview(domainWithoutSubdomain);
@@ -46,13 +48,21 @@ async function getLinkPreview(url: string) {
   // Parse the HTML using cheerio
   const $ = cheerio.load(html);
   const title = $("title").text();
-  const description = $("meta[name=description]").attr("content");
-  const image = $("meta[property='og:image']").attr("content");
+  const description =
+    $("meta[name=description]").attr("content") || "__blank__";
+  const image =
+    $("meta[property='og:image']").attr("content") ||
+    "https://www.teahub.io/photos/full/239-2396598_wallpaper-single-magenta-solid-color-one-colour-plain.jpg";
+
+  const favicon =
+    $("link[rel='icon']").attr("href") ||
+    "https://icons8.com/icon/NyuxPErq0tu2/globe-africa";
 
   // Return the link preview object
   return {
     title,
     description,
     image,
+    favicon,
   };
 }
