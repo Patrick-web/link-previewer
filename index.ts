@@ -10,8 +10,17 @@ router.get("/", async (context) => {
   // Get the URL from the query string
   const url = params.get("url") as string;
 
+  // Parse the URL using the URL object
+  const parsedUrl = new URL(url);
+
+  // Extract the hostname from the URL
+  const domain = parsedUrl.hostname;
+
+  // Remove the subdomain from the domain
+  const domainWithoutSubdomain = domain.replace(/.*?\./, "");
+
   // Get the link preview information
-  const linkPreview = await getLinkPreview(url);
+  const linkPreview = await getLinkPreview(domainWithoutSubdomain);
   console.log(linkPreview);
 
   // Set the response header to application/json
