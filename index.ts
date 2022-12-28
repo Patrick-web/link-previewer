@@ -1,5 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak/mod.ts";
 import * as cheerio from "https://esm.sh/cheerio@1.0.0-rc.12";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 const router = new Router();
 
@@ -35,6 +36,9 @@ router.get("/", async (context) => {
   // Set the response header to application/json
   context.response.headers.set("Content-Type", "application/json");
 
+  context.response.headers.set("Access-Control-Allow-Origin", "*");
+
+
   // Return the link preview information as a JSON response
   context.response.body = linkPreview;
 });
@@ -44,11 +48,11 @@ const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-// Enable CORS for all routes
-app.use(async (context, next) => {
-  await next();
-  context.response.headers.set("Access-Control-Allow-Origin", "*");
-});
+app.use(
+  oakCors({
+    origin: "*"
+  }),
+);
 
 console.log("Listening on port 8000...");
 await app.listen({ port: 8000 });
