@@ -7,6 +7,7 @@ const router = new Router();
 router.get("/", async (context) => {
   //Get Search params
   const params = context.request.url.searchParams;
+  console.log(params);
 
   // Get the URL from the query string
   const url = params.get("url");
@@ -15,22 +16,22 @@ router.get("/", async (context) => {
     return;
   }
 
+  console.log(url);
+
+
   // Parse the URL using the URL object
   const parsedUrl = new URL(url);
 
+  console.log(parsedUrl);
+
   // Extract the hostname from the URL
-  const domain = parsedUrl.hostname;
+  const domain = `${parsedUrl.protocol}//${parsedUrl.hostname}`;
 
-  // Remove the subdomain from the domain
-  const domainWithoutSubdomain = `${parsedUrl.protocol}//${domain.replace(
-    /.*?\./,
-    ""
-  )}`;
 
-  console.log(domainWithoutSubdomain);
+  console.log(domain);
 
   // Get the link preview information
-  const linkPreview = await getLinkPreview(domainWithoutSubdomain);
+  const linkPreview = await getLinkPreview(domain);
   console.log(linkPreview);
 
   // Set the response header to application/json
