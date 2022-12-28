@@ -44,6 +44,12 @@ const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+// Enable CORS for all routes
+app.use(async (context, next) => {
+  await next();
+  context.response.headers.set("Access-Control-Allow-Origin", "*");
+});
+
 console.log("Listening on port 8000...");
 await app.listen({ port: 8000 });
 
